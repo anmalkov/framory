@@ -259,6 +259,62 @@ framory/
 └── README.md                   # Project overview (you are here)
 ```
 
+## Releasing
+
+Releases are fully automated via GitHub Actions. Pushing a semver tag triggers
+the release pipeline, which builds a Docker image, pushes it to Docker Hub, and
+creates a GitHub Release with an auto-generated changelog.
+
+### Creating a Release
+
+```bash
+# Tag the current commit
+git tag v1.0.0
+
+# Push the tag to trigger the pipeline
+git push origin v1.0.0
+```
+
+### What Happens Automatically
+
+1. The `release.yml` workflow triggers on the tag push
+2. Docker image builds from the repository Dockerfile (multi-stage)
+3. Image is pushed to Docker Hub (`anmalkov/framory`) with four tags:
+   - `1.0.0` (exact version — immutable)
+   - `1.0` (minor — rolling, updated by patch releases)
+   - `1` (major — rolling, updated by minor/patch releases)
+   - `latest` (always the newest release)
+4. A GitHub Release is created with auto-generated release notes
+
+### Verifying a Release
+
+- **Docker Hub**: `docker pull anmalkov/framory:1.0.0`
+- **GitHub**: Check the repository's Releases page for the new entry
+
+### Tag Format
+
+Only strict semver tags trigger the pipeline:
+
+| Tag | Triggers? |
+| --- | --------- |
+| `v1.0.0` | Yes |
+| `v2.3.1` | Yes |
+| `v1.0.0-rc1` | No (pre-release) |
+| `v1.0.0-beta.1` | No (pre-release) |
+| `test-build` | No (non-semver) |
+
+### Required Secrets
+
+The following repository secrets must be configured in GitHub (Settings →
+Secrets and variables → Actions):
+
+| Secret | Description |
+| ------ | ----------- |
+| `DOCKERHUB_USERNAME` | Docker Hub account username |
+| `DOCKERHUB_TOKEN` | Docker Hub Personal Access Token (read/write scope) |
+
+`GITHUB_TOKEN` is provided automatically by GitHub Actions.
+
 ## Code Style & Conventions
 
 ### Backend (Python)
