@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS channels (
     current_index   INTEGER NOT NULL DEFAULT 0,
     history         TEXT NOT NULL DEFAULT '[]',
     sequence        TEXT NOT NULL DEFAULT '[]',
+    show_progress_bar INTEGER NOT NULL DEFAULT 1,
     created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
     updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
 );

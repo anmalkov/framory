@@ -5,6 +5,7 @@ import { PlaybackControls } from "../components/PlaybackControls";
 import { PhotoInfo } from "../components/PhotoInfo";
 import { StatusBar } from "../components/StatusBar";
 import { SettingsPanel } from "../components/SettingsPanel";
+import { ProgressBar } from "../components/ProgressBar";
 import { useChannel } from "../context/ChannelContext";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { useFullscreen } from "../hooks/useFullscreen";
@@ -112,8 +113,18 @@ export function ChannelPage({ channelId }: ChannelPageProps) {
           currentFolder={state.config.folder}
           currentDelay={state.config.delay_seconds}
           currentStopTime={state.config.stop_time}
+          currentShowProgressBar={state.config.show_progress_bar}
           onSave={sendConfigure}
           onClose={() => setShowSettings(false)}
+        />
+      )}
+
+      {/* Progress bar */}
+      {state.config.show_progress_bar && state.photo && (
+        <ProgressBar
+          key={`${state.seq}-${state.config.delay_seconds}`}
+          durationSeconds={state.config.delay_seconds}
+          isPlaying={state.playbackState === "playing"}
         />
       )}
 

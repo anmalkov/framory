@@ -5,10 +5,12 @@ interface SettingsPanelProps {
   currentFolder: string;
   currentDelay: number;
   currentStopTime: string;
+  currentShowProgressBar: boolean;
   onSave: (settings: {
     folder?: string;
     delay_seconds?: number;
     stop_time?: string;
+    show_progress_bar?: boolean;
   }) => void;
   onClose: () => void;
 }
@@ -17,12 +19,14 @@ export function SettingsPanel({
   currentFolder,
   currentDelay,
   currentStopTime,
+  currentShowProgressBar,
   onSave,
   onClose,
 }: SettingsPanelProps) {
   const [folder, setFolder] = useState(currentFolder);
   const [delay, setDelay] = useState(currentDelay);
   const [stopTime, setStopTime] = useState(currentStopTime);
+  const [showProgressBar, setShowProgressBar] = useState(currentShowProgressBar);
 
   // Folder browsing state
   const [browsePath, setBrowsePath] = useState(currentFolder);
@@ -54,10 +58,11 @@ export function SettingsPanel({
   }, [browsing]);
 
   const handleSave = () => {
-    const settings: { folder?: string; delay_seconds?: number; stop_time?: string } = {};
+    const settings: { folder?: string; delay_seconds?: number; stop_time?: string; show_progress_bar?: boolean } = {};
     if (folder !== currentFolder) settings.folder = folder;
     if (delay !== currentDelay) settings.delay_seconds = delay;
     if (stopTime !== currentStopTime) settings.stop_time = stopTime;
+    if (showProgressBar !== currentShowProgressBar) settings.show_progress_bar = showProgressBar;
     if (Object.keys(settings).length > 0) {
       onSave(settings);
     }
@@ -171,8 +176,28 @@ export function SettingsPanel({
           type="time"
           value={stopTime}
           onChange={(e) => setStopTime(e.target.value)}
-          className="mb-6 w-full rounded bg-black/30 px-3 py-2 text-sm text-framory-text outline-none focus:ring-1 focus:ring-framory-primary"
+          className="mb-4 w-full rounded bg-black/30 px-3 py-2 text-sm text-framory-text outline-none focus:ring-1 focus:ring-framory-primary"
         />
+
+        {/* Show Progress Bar */}
+        <label className="mb-4 flex items-center justify-between">
+          <span className="text-sm text-framory-muted">Show Progress Bar</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={showProgressBar}
+            onClick={() => setShowProgressBar(!showProgressBar)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              showProgressBar ? "bg-framory-primary" : "bg-framory-muted/40"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                showProgressBar ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </label>
 
         {/* Actions */}
         <div className="flex gap-3">

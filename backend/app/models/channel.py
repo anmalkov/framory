@@ -27,6 +27,7 @@ class Channel(BaseModel):
     current_index: int = 0
     history: list[int] = []
     sequence: list[str] = []
+    show_progress_bar: bool = True
     created_at: datetime | None = None
     updated_at: datetime | None = None
 

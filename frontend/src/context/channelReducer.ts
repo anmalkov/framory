@@ -17,6 +17,7 @@ export interface ChannelConfig {
   folder: string;
   delay_seconds: number;
   stop_time: string;
+  show_progress_bar: boolean;
 }
 
 export interface ChannelState {
@@ -56,7 +57,7 @@ export const initialChannelState: ChannelState = {
   currentIndex: 0,
   sequenceLength: 0,
   hasPrevious: false,
-  config: { folder: "", delay_seconds: 60, stop_time: "00:00" },
+  config: { folder: "", delay_seconds: 60, stop_time: "00:00", show_progress_bar: true },
   connectionStatus: "offline",
   seq: 0,
   error: null,

@@ -14,6 +14,7 @@ export default {
           error: "var(--color-error)",
           success: "var(--color-success)",
           warning: "var(--color-warning)",
+          progress: "var(--color-progress)",
         },
       },
     },

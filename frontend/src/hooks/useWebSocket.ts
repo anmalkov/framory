@@ -7,6 +7,7 @@ interface ConfigureSettings {
   folder?: string;
   delay_seconds?: number;
   stop_time?: string;
+  show_progress_bar?: boolean;
 }
 
 interface UseWebSocketReturn {

@@ -20,6 +20,13 @@ async def init_db(db_path: str) -> None:
     await _db.execute("PRAGMA journal_mode=WAL")
     schema = _SCHEMA_PATH.read_text()
     await _db.executescript(schema)
+    # Migration: add show_progress_bar column for existing databases
+    try:
+        await _db.execute(
+            "ALTER TABLE channels ADD COLUMN show_progress_bar INTEGER NOT NULL DEFAULT 1"
+        )
+    except Exception:  # noqa: BLE001 – duplicate column is expected
+        pass
     await _db.commit()
 
 
@@ -55,8 +62,8 @@ async def save_channel(channel: Channel) -> None:
     db = _get_db()
     await db.execute(
         """INSERT INTO channels (id, folder, delay_seconds, stop_time, state,
-           current_index, history, sequence)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+           current_index, history, sequence, show_progress_bar)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET
              folder = excluded.folder,
              delay_seconds = excluded.delay_seconds,
@@ -64,7 +71,8 @@ async def save_channel(channel: Channel) -> None:
              state = excluded.state,
              current_index = excluded.current_index,
              history = excluded.history,
-             sequence = excluded.sequence""",
+             sequence = excluded.sequence,
+             show_progress_bar = excluded.show_progress_bar""",
         (
             channel.id,
             channel.folder,
@@ -74,6 +82,7 @@ async def save_channel(channel: Channel) -> None:
             channel.current_index,
             json.dumps(channel.history),
             json.dumps(channel.sequence),
+            int(channel.show_progress_bar),
         ),
     )
     await db.commit()

@@ -212,6 +212,9 @@ class ChannelManager:
                         channel.state = PlaybackState.stopped_scheduled
                         self._cancel_timer(channel_id)
 
+            if "show_progress_bar" in settings and settings["show_progress_bar"] is not None:
+                channel.show_progress_bar = bool(settings["show_progress_bar"])
+
             if folder_changed:
                 photos = photo_service.scan_folder(channel.folder)
                 if photos:
@@ -259,6 +262,7 @@ class ChannelManager:
                 folder=channel.folder,
                 delay_seconds=channel.delay_seconds,
                 stop_time=channel.stop_time,
+                show_progress_bar=channel.show_progress_bar,
             ),
             seq=seq,
         )
@@ -304,6 +308,7 @@ class ChannelManager:
                 folder=channel.folder,
                 delay_seconds=channel.delay_seconds,
                 stop_time=channel.stop_time,
+                show_progress_bar=channel.show_progress_bar,
             ),
             seq=seq,
         )
