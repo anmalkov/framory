@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.coverage
+htmlcov/
+
+# Node.js
+node_modules/
+frontend/dist/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# Data
+backend/data/
+*.db
+*.db-journal
+*.db-wal
+
+# Cache
+/data/

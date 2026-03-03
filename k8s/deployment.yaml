@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: framory
+  labels:
+    app: framory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: framory
+  template:
+    metadata:
+      labels:
+        app: framory
+    spec:
+      containers:
+        - name: framory
+          image: framory:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: framory-config
+          volumeMounts:
+            - name: photos
+              mountPath: /photos
+              readOnly: true
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: photos
+          persistentVolumeClaim:
+            claimName: framory-photos
+        - name: data
+          persistentVolumeClaim:
+            claimName: framory-data
