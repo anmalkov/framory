@@ -39,7 +39,10 @@ When the slideshow is running, you can control it from any connected device.
 ### Using the on-screen controls
 
 1. **Tap anywhere** on the photo to show the control bar
-2. The controls appear at the bottom of the screen:
+2. While the slideshow is playing, a thin progress line at the bottom of the
+   screen shows how long until the next photo (this can be turned off in
+   settings)
+3. The controls appear at the bottom of the screen:
    - **▶ Play** — Start the slideshow
    - **⏹ Stop** — Pause the slideshow on the current photo
    - **⏭ Next** — Skip to the next photo
@@ -77,6 +80,13 @@ folders and how many photos each one contains. Select a folder and tap **Save**.
 Set how many seconds each photo stays on screen before the slideshow moves to
 the next one. The minimum is 5 seconds. A longer delay (e.g., 60 or 120
 seconds) works well for a wall-mounted frame.
+
+### Show Progress Bar
+
+Toggle whether a thin progress line appears at the bottom of the screen. When
+enabled, the line grows from left to right over the delay period, showing how
+long until the next photo. Turning it off gives a cleaner look for wall-mounted
+frames.
 
 ### Daily Stop Time
 

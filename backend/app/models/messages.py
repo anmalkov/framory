@@ -17,6 +17,7 @@ class ConfigureSettings(BaseModel):
     folder: str | None = None
     delay_seconds: int | None = None
     stop_time: str | None = None
+    show_progress_bar: bool | None = None
 
 
 class ConfigureMessage(BaseModel):
@@ -42,6 +43,7 @@ class ChannelConfig(BaseModel):
     folder: str
     delay_seconds: int
     stop_time: str
+    show_progress_bar: bool
 
 
 class StateMessage(BaseModel):

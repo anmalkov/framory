@@ -27,10 +27,10 @@ cd src; pytest; ruff check .
 Python 3.14+ (backend), TypeScript 5.x (frontend): Follow standard conventions
 
 ## Recent Changes
+- 003-photo-progress-bar: Added Python 3.14+ (backend), TypeScript (frontend)
 - 002-project-documentation: Added Markdown (GitHub Flavored Markdown with Mermaid diagram support) + markdownlint-cli2 (npm, for markdown linting), markdownlint-cli2-action (GitHub Action v22)
 - 001-channel-photo-frame: Added Python 3.14+ (backend), TypeScript (frontend)
 
-- 001-channel-photo-frame: Added Python 3.14+ (backend), TypeScript 5.x (frontend) + FastAPI, Uvicorn, Pillow, aiosqlite, Pydantic Settings (backend); React 18+, Vite, Tailwind CSS, react-swipeable (frontend)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

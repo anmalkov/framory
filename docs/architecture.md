@@ -45,7 +45,9 @@ graph TD
 - **Browser Clients** — React single-page application running on tablets,
   phones, or any device with a browser. Connects to a channel via WebSocket for
   real-time state updates and sends commands (play, stop, next, prev) back to
-  the server.
+  the server. Includes a `ProgressBar` component that animates a thin line
+  across the bottom of the screen over `delay_seconds`, and a toggle in
+  `SettingsPanel` to show or hide it per channel.
 
 - **REST API** (`app/api/routes.py`) — HTTP endpoints for channel management
   (`GET /api/channels`, `GET /api/channels/{id}`, `POST /api/channels`), health
@@ -200,6 +202,7 @@ The `Channel` model (`app/models/channel.py`) is the central domain object:
 | `current_index` | integer | `0` | Position in the shuffled sequence |
 | `history` | list[int] | `[]` | Stack of previous indices (for "previous" navigation) |
 | `sequence` | list[string] | `[]` | Shuffled list of photo filenames |
+| `show_progress_bar` | boolean | `true` | Whether to display the progress bar animation |
 | `created_at` | datetime | *(auto)* | Channel creation timestamp |
 | `updated_at` | datetime | *(auto)* | Last modification timestamp |
 

@@ -8,6 +8,11 @@ export default defineConfig(({ mode }) => ({
     mode === "analyze" &&
       visualizer({ open: true, gzipSize: true, filename: "dist/stats.html" }),
   ],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: [],
+  },
   server: {
     proxy: {
       "/api": {
