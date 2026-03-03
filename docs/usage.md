@@ -49,7 +49,7 @@ When the slideshow is running, you can control it from any connected device.
    - **⏮ Previous** — Go back to the last photo you saw
    - **↺ Reset** — Reshuffle the photos and start from the beginning
    - **⚙ Settings** — Open the settings panel (see below)
-3. Tap anywhere on the photo again to hide the controls
+4. Tap anywhere on the photo again to hide the controls
 
 ### Using swipe gestures
 
