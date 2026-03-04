@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { fetchFolders, type FolderEntry } from "../services/api";
+import { useState } from "react";
+import { FolderBrowser } from "./FolderBrowser";
 
 interface SettingsPanelProps {
   currentFolder: string;
@@ -27,35 +27,7 @@ export function SettingsPanel({
   const [delay, setDelay] = useState(currentDelay);
   const [stopTime, setStopTime] = useState(currentStopTime);
   const [showProgressBar, setShowProgressBar] = useState(currentShowProgressBar);
-
-  // Folder browsing state
-  const [browsePath, setBrowsePath] = useState(currentFolder);
-  const [folders, setFolders] = useState<FolderEntry[]>([]);
-  const [photoCount, setPhotoCount] = useState(0);
-  const [parentPath, setParentPath] = useState<string | null>(null);
   const [browsing, setBrowsing] = useState(false);
-  const [loadingFolders, setLoadingFolders] = useState(false);
-
-  const loadFolders = useCallback(async (path: string) => {
-    setLoadingFolders(true);
-    try {
-      const data = await fetchFolders(path);
-      setFolders(data.folders);
-      setPhotoCount(data.photo_count);
-      setParentPath(data.parent);
-      setBrowsePath(path);
-    } catch {
-      // Keep current state on error
-    } finally {
-      setLoadingFolders(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (browsing) {
-      void loadFolders(browsePath);
-    }
-  }, [browsing]);
 
   const handleSave = () => {
     const settings: { folder?: string; delay_seconds?: number; stop_time?: string; show_progress_bar?: boolean } = {};
@@ -99,53 +71,15 @@ export function SettingsPanel({
             </button>
           </div>
         ) : (
-          <div className="mb-4 rounded bg-black/30 p-3">
-            <div className="mb-2 flex items-center gap-2 text-sm">
-              {parentPath !== null && (
-                <button
-                  onClick={() => void loadFolders(parentPath ?? "")}
-                  className="text-framory-primary active:opacity-80"
-                >
-                  ← Back
-                </button>
-              )}
-              <span className="flex-1 truncate text-framory-muted">
-                /{browsePath || ""}
-              </span>
-              <span className="text-xs text-framory-muted">{photoCount} photos</span>
-            </div>
-            {loadingFolders ? (
-              <div className="py-4 text-center text-sm text-framory-muted">
-                Loading…
-              </div>
-            ) : (
-              <div className="max-h-40 overflow-y-auto">
-                {folders.map((f) => (
-                  <button
-                    key={f.path}
-                    onClick={() => void loadFolders(f.path)}
-                    className="block w-full rounded px-2 py-1.5 text-left text-sm text-framory-text active:bg-framory-primary/20"
-                  >
-                    📁 {f.name}
-                  </button>
-                ))}
-                {folders.length === 0 && (
-                  <p className="py-2 text-center text-xs text-framory-muted">
-                    No subfolders
-                  </p>
-                )}
-              </div>
-            )}
-            <div className="mt-2 flex justify-end gap-2">
-              <button
-                onClick={() => {
-                  setFolder(browsePath);
-                  setBrowsing(false);
-                }}
-                className="rounded bg-framory-primary px-3 py-1.5 text-sm text-white active:opacity-80"
-              >
-                Select This Folder
-              </button>
+          <div className="mb-4">
+            <FolderBrowser
+              initialPath={folder}
+              onSelect={(path) => {
+                setFolder(path);
+                setBrowsing(false);
+              }}
+            />
+            <div className="mt-2 flex justify-end">
               <button
                 onClick={() => setBrowsing(false)}
                 className="rounded bg-framory-surface px-3 py-1.5 text-sm text-framory-muted active:opacity-80"

@@ -11,25 +11,31 @@ timing, and controls.
 
 1. Open Framory in your browser (ask the person who set it up for the address —
    it looks like `http://framory.local:8000` or similar)
-2. You will see the home screen. If no channels exist yet, the page will tell
-   you to create one
-3. To create a channel, add `?channel=` followed by a name to the address. For
-   example: `http://framory.local:8000/?channel=living-room`
-4. Channel names must be lowercase letters, numbers, and hyphens (e.g.,
+2. You will see the home screen. If no channels exist yet, click the
+   **+ Add Channel** button. If channels already exist, the button appears
+   below the channel list
+3. Enter a channel name — the name is automatically lowercased and validated as
+   you type (only lowercase letters, numbers, and hyphens are allowed, e.g.,
    `family`, `vacation-2025`, `kitchen-frame`)
-5. Once created, the channel appears on the home screen for easy access
+4. Click **Browse folders…** to open the folder browser, navigate into
+   subfolders if needed, and select the folder containing your photos — the
+   photo count is shown for each folder
+5. Click **Create** — the channel is created and you are automatically
+   redirected to the new channel's slideshow view
+6. To cancel, click **Cancel** to return to the home screen
 
 ## Connecting a Device
 
 Once a channel exists, you can open it on any device — a tablet on the wall, a
 phone on the nightstand, or a laptop on the desk.
 
-1. Open your browser and go to the Framory address with your channel name
-   (e.g., `http://framory.local:8000/?channel=living-room`)
-2. The device will connect to the channel and start showing photos
-3. To use the full screen, tap anywhere on the photo to reveal the control bar,
+1. Open your browser and go to the Framory address (e.g.,
+   `http://framory.local:8000`)
+2. On the home screen, tap the channel you want to view
+3. The device will connect to the channel and start showing photos
+4. To use the full screen, tap anywhere on the photo to reveal the control bar,
    then tap the fullscreen button
-4. For a wall-mounted tablet, enable fullscreen and leave the device — it will
+5. For a wall-mounted tablet, enable fullscreen and leave the device — it will
    keep showing photos automatically
 
 ## Controlling Playback
@@ -43,10 +49,11 @@ When the slideshow is running, you can control it from any connected device.
    screen shows how long until the next photo (this can be turned off in
    settings)
 3. The controls appear at the bottom of the screen:
+   - **⌂ Home** — Go back to the home screen (channel list)
+   - **⏮ Previous** — Go back to the last photo you saw
    - **▶ Play** — Start the slideshow
    - **⏹ Stop** — Pause the slideshow on the current photo
    - **⏭ Next** — Skip to the next photo
-   - **⏮ Previous** — Go back to the last photo you saw
    - **↺ Reset** — Reshuffle the photos and start from the beginning
    - **⚙ Settings** — Open the settings panel (see below)
 4. Tap anywhere on the photo again to hide the controls

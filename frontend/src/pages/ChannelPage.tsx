@@ -12,9 +12,10 @@ import { useFullscreen } from "../hooks/useFullscreen";
 
 interface ChannelPageProps {
   channelId: string;
+  onHome?: () => void;
 }
 
-export function ChannelPage({ channelId }: ChannelPageProps) {
+export function ChannelPage({ channelId, onHome }: ChannelPageProps) {
   const { state, dispatch } = useChannel();
   const { sendCommand, sendConfigure } = useWebSocket(channelId, dispatch);
   const { toggleFullscreen } = useFullscreen();
@@ -90,12 +91,13 @@ export function ChannelPage({ channelId }: ChannelPageProps) {
             <PlaybackControls
               playbackState={state.playbackState}
               hasPrevious={state.hasPrevious}
-              onPlay={() => sendCommand("play")}
+              onPlay={() => { sendCommand("play"); setShowControls(false); }}
               onStop={() => sendCommand("stop")}
               onNext={() => sendCommand("next")}
               onPrev={() => sendCommand("prev")}
               onReset={() => sendCommand("reset")}
               onSettings={() => setShowSettings(!showSettings)}
+              onHome={onHome}
             />
             <button
               onClick={toggleFullscreen}

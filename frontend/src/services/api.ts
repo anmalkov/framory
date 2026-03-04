@@ -60,11 +60,15 @@ export async function fetchChannel(id: string): Promise<ChannelDetail> {
   return apiFetch<ChannelDetail>(`/api/channels/${encodeURIComponent(id)}`);
 }
 
-export async function createChannel(id: string): Promise<ChannelDetail> {
+export async function createChannel(id: string, folder?: string): Promise<ChannelDetail> {
+  const body: Record<string, string> = { id };
+  if (folder !== undefined) {
+    body.folder = folder;
+  }
   return apiFetch<ChannelDetail>("/api/channels", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify(body),
   });
 }
 
