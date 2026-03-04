@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchChannels, type ChannelSummary } from "../services/api";
+import { CreateChannelForm } from "../components/CreateChannelForm";
 
 interface LandingPageProps {
   onSelectChannel: (id: string) => void;
-  onCreateChannel?: (id: string) => void;
+  onCreateChannel: (id: string, folder: string) => void;
 }
 
-export function LandingPage({ onSelectChannel }: LandingPageProps) {
+export function LandingPage({ onSelectChannel, onCreateChannel }: LandingPageProps) {
   const [channels, setChannels] = useState<ChannelSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -64,12 +66,24 @@ export function LandingPage({ onSelectChannel }: LandingPageProps) {
 
       {error && <p className="text-framory-error">{error}</p>}
 
-      {!loading && !error && channels.length === 0 && (
-        <p className="text-framory-muted">
-          No channels yet. Navigate to{" "}
-          <code className="text-framory-primary">/?channel=my-channel</code> to
-          create one.
-        </p>
+      {!loading && !error && channels.length === 0 && !showCreateForm && (
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-framory-muted">No channels yet</p>
+          <button
+            onClick={() => setShowCreateForm(true)}
+            className="rounded-lg bg-framory-primary px-6 py-3 font-semibold text-white active:opacity-80"
+            aria-label="Add Channel"
+          >
+            + Add Channel
+          </button>
+        </div>
+      )}
+
+      {showCreateForm && (
+        <CreateChannelForm
+          onCreated={(channelId) => onCreateChannel(channelId, "")}
+          onCancel={() => setShowCreateForm(false)}
+        />
       )}
 
       {!loading && channels.length > 0 && (
@@ -99,6 +113,16 @@ export function LandingPage({ onSelectChannel }: LandingPageProps) {
               </div>
             </button>
           ))}
+
+          {!showCreateForm && (
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="w-full rounded-lg border border-dashed border-framory-muted/30 py-3 text-sm font-semibold text-framory-muted active:bg-framory-primary/10"
+              aria-label="Add Channel"
+            >
+              + Add Channel
+            </button>
+          )}
         </div>
       )}
     </div>

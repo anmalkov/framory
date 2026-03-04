@@ -8,8 +8,8 @@ from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel, field_validator
 
 from app.config import config
-from app.services.channel_manager import channel_manager
 from app.services import photo_service
+from app.services.channel_manager import channel_manager
 
 router = APIRouter(prefix="/api")
 
@@ -18,6 +18,7 @@ _CHANNEL_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*[a-z0-9]$")
 
 class CreateChannelRequest(BaseModel):
     id: str
+    folder: str | None = None
 
     @field_validator("id")
     @classmethod
@@ -115,7 +116,17 @@ async def create_channel(req: CreateChannelRequest) -> dict[str, object]:
             status_code=409, detail=f"Channel '{req.id}' already exists"
         )
 
-    ch = await channel_manager.create_channel(req.id)
+    if req.folder is not None:
+        if ".." in req.folder:
+            raise HTTPException(status_code=400, detail="Invalid folder path")
+        base = Path(config.photo_root).resolve()
+        target = (base / req.folder).resolve()
+        if not str(target).startswith(str(base)):
+            raise HTTPException(status_code=400, detail="Invalid folder path")
+        if not target.is_dir():
+            raise HTTPException(status_code=400, detail="Folder not found")
+
+    ch = await channel_manager.create_channel(req.id, folder=req.folder)
     return {
         "id": ch.id,
         "folder": ch.folder,
@@ -152,9 +163,9 @@ async def get_channel_photo(channel_id: str) -> Response:
             headers={"Cache-Control": "public, max-age=31536000, immutable"},
         )
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="No photo available")
+        raise HTTPException(status_code=404, detail="No photo available") from None
     except OSError:
-        raise HTTPException(status_code=503, detail="Photo source unavailable")
+        raise HTTPException(status_code=503, detail="Photo source unavailable") from None
 
 
 @router.get("/folders")
@@ -185,7 +196,7 @@ async def browse_folders(path: str = "") -> dict[str, object]:
                     if Path(entry.name).suffix.lower() in {".jpg", ".jpeg"}:
                         photo_count += 1
     except OSError:
-        raise HTTPException(status_code=503, detail="Folder not accessible")
+        raise HTTPException(status_code=503, detail="Folder not accessible") from None
 
     folders.sort(key=lambda f: f["name"])
 

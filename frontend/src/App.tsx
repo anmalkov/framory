@@ -84,9 +84,22 @@ export default function App() {
     }
   };
 
+  const handleCreateChannel = useCallback(
+    (channelId: string) => {
+      window.history.pushState(null, "", `/?channel=${encodeURIComponent(channelId)}`);
+      setView({ kind: "channel", channelId });
+    },
+    [],
+  );
+
   switch (view.kind) {
     case "landing":
-      return <LandingPage onSelectChannel={navigateTo} />;
+      return (
+        <LandingPage
+          onSelectChannel={navigateTo}
+          onCreateChannel={handleCreateChannel}
+        />
+      );
 
     case "loading":
       return (
@@ -120,6 +133,6 @@ export default function App() {
       );
 
     case "channel":
-      return <ChannelPage channelId={view.channelId} />;
+      return <ChannelPage channelId={view.channelId} onHome={goHome} />;
   }
 }

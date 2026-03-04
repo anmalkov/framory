@@ -243,7 +243,15 @@ framory/
 │   ├── src/
 │   │   ├── App.tsx             # Router — landing page vs. channel page
 │   │   ├── main.tsx            # React entry point
-│   │   ├── components/         # UI components (PhotoViewer, PlaybackControls, etc.)
+│   │   ├── components/         # UI components
+│   │   │   ├── CreateChannelForm.tsx  # Channel creation form (name + folder)
+│   │   │   ├── FolderBrowser.tsx      # Reusable folder navigation component
+│   │   │   ├── PhotoInfo.tsx          # Photo metadata display
+│   │   │   ├── PhotoViewer.tsx        # Main photo display
+│   │   │   ├── PlaybackControls.tsx   # Playback buttons (Home, Play, Stop, etc.)
+│   │   │   ├── ProgressBar.tsx        # Slideshow progress animation
+│   │   │   ├── SettingsPanel.tsx      # Channel settings (folder, delay, stop time)
+│   │   │   └── StatusBar.tsx          # Connection status indicator
 │   │   ├── context/            # Channel state management (React Context + reducer)
 │   │   ├── hooks/              # useWebSocket, useFullscreen
 │   │   ├── pages/              # LandingPage, ChannelPage

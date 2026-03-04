@@ -45,14 +45,21 @@ graph TD
 - **Browser Clients** — React single-page application running on tablets,
   phones, or any device with a browser. Connects to a channel via WebSocket for
   real-time state updates and sends commands (play, stop, next, prev) back to
-  the server. Includes a `ProgressBar` component that animates a thin line
-  across the bottom of the screen over `delay_seconds`, and a toggle in
-  `SettingsPanel` to show or hide it per channel.
+  the server. Key UI components include:
+  - `CreateChannelForm` — channel creation with name validation and folder
+    selection, accessible from the home screen
+  - `FolderBrowser` — reusable folder navigation with photo counts, used in
+    both channel creation and settings
+  - `PlaybackControls` — playback buttons including a Home button for
+    navigating back to the channel list
+  - `ProgressBar` — thin line animation over `delay_seconds`, toggled per
+    channel via `SettingsPanel`
 
 - **REST API** (`app/api/routes.py`) — HTTP endpoints for channel management
-  (`GET /api/channels`, `GET /api/channels/{id}`, `POST /api/channels`), health
-  checks (`GET /api/health`), photo serving (`GET /api/channels/{id}/photo`),
-  and folder browsing (`GET /api/folders`).
+  (`GET /api/channels`, `GET /api/channels/{id}`, `POST /api/channels` with
+  optional `folder` parameter for immediate photo scanning), health checks
+  (`GET /api/health`), photo serving (`GET /api/channels/{id}/photo`), and
+  folder browsing (`GET /api/folders`).
 
 - **WebSocket Handler** (`app/api/websocket.py`) — Manages persistent
   connections per channel. Accepts `command`, `configure`, and `ping` messages

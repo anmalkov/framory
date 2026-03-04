@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 from datetime import datetime
 from typing import TYPE_CHECKING
@@ -14,7 +15,7 @@ from app.models.messages import (
     StateMessage,
 )
 from app.services import photo_service
-from app.services.db import get_channel, list_channels, save_channel
+from app.services.db import list_channels, save_channel
 
 if TYPE_CHECKING:
     from fastapi import WebSocket
@@ -48,14 +49,21 @@ class ChannelManager:
     def client_count(self, channel_id: str) -> int:
         return len(self._clients.get(channel_id, set()))
 
-    async def create_channel(self, channel_id: str) -> Channel:
+    async def create_channel(
+        self, channel_id: str, *, folder: str | None = None
+    ) -> Channel:
         """Create a new channel with default settings."""
+        effective_folder = folder if folder is not None else config.default_folder
         channel = Channel(
             id=channel_id,
-            folder=config.default_folder,
+            folder=effective_folder,
             delay_seconds=config.default_delay_seconds,
             stop_time=config.default_stop_time,
         )
+        if effective_folder:
+            photos = photo_service.scan_folder(effective_folder)
+            if photos:
+                channel.sequence = photo_service.generate_sequence(photos)
         self._channels[channel_id] = channel
         self._seq[channel_id] = 0
         await save_channel(channel)
@@ -318,10 +326,8 @@ class ChannelManager:
         msg = ErrorMessage(message=message, code=code)
         clients = self._clients.get(channel_id, set()).copy()
         for ws in clients:
-            try:
+            with contextlib.suppress(Exception):
                 await ws.send_json(msg.model_dump())
-            except Exception:
-                pass
 
     def _start_timer(self, channel_id: str) -> None:
         self._cancel_timer(channel_id)
