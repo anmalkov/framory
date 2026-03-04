@@ -40,21 +40,27 @@ Framory is a **browser-based photo frame server** for private, self-hosted slide
 ## Use Cases
 
 ### 🖼️ Wall-mounted tablet photo frame
+
 Mount an old iPad/Android tablet and run Framory in fullscreen for a clean, kiosk-style photo frame.
 
 ### 📺 TV + Raspberry Pi “living room frame”
+
 Open Framory on a Raspberry Pi connected to a TV to rotate family photos on a large screen.
 
 ### 🏠 Multi-room synchronized displays
+
 Keep a kitchen tablet and hallway display showing the same photo — skip ahead on one, and both update instantly.
 
 ### 🧑‍💼 Office / studio slideshow
+
 Show a rotating set of images (events, product shots, portfolio) on multiple screens with centralized control.
 
 ### 🗂️ NAS-backed photo library
+
 Point channels to folders on your NAS (mounted locally or via NFS) so you don’t duplicate photo storage.
 
 ### 🎉 Event display
+
 Run a dedicated channel for a party/wedding/baby photos and control the slideshow from any phone.
 
 ---
